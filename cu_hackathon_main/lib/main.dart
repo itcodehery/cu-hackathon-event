@@ -1,7 +1,7 @@
 import 'package:cu_hackathon_main/helper/shared_prefs_helper.dart';
 import 'package:cu_hackathon_main/pages/data_breach_page.dart';
-import 'package:cu_hackathon_main/pages/email_breach_analytics.dart';
 import 'package:cu_hackathon_main/pages/home_page.dart';
+import 'package:cu_hackathon_main/pages/password_security_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -25,7 +25,7 @@ class XposedOrNot extends StatelessWidget {
       routes: {
         '/home': (context) => const HomePage(),
         '/data_breach': (context) => const DataBreachPage(),
-        '/email_breach_analytics': (context) => const EmailBreachAnalytics(),
+        '/password_security': (context) => const PasswordSecurityPage(),
       },
     );
   }
