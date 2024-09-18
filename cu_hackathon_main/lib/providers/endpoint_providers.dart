@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cu_hackathon_main/models/email_analytics_model.dart';
 import 'package:cu_hackathon_main/models/password_exposure_model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -28,19 +29,28 @@ Future<List<String>> fetchDataBreaches(String email) async {
 }
 
 // Endpoint #2 : Fetching Data Breach Analytics
-Future<String> fetchDataBreachAnalytics(String email) async {
+
+Future<EmailAnalyticsModel> fetchDataBreachAnalytics(String email) async {
   try {
-    final response = await http.get(Uri.parse(
-        'https://api.xposedornot.com/v1/breach-analytics?email=123@gmail.com'));
-    debugPrint(response.body);
+    final response = await http.get(
+      Uri.parse(
+          'http://xon-api-test.xposedornot.com/v1/breach-analytics?email=$email'),
+    );
+
+    debugPrint('Response: ${response.body}');
+
     if (response.statusCode == 200) {
-      final res = jsonDecode(response.body);
-      return res.toString();
+      final Map<String, dynamic> res = jsonDecode(response.body);
+
+      // Parse the JSON data into the Welcome model
+      EmailAnalyticsModel welcomeData = EmailAnalyticsModel.fromJson(res);
+
+      return welcomeData; // Return the parsed Welcome data
     } else {
-      return 'No breaches detected!';
+      throw Exception('No breaches detected!');
     }
   } catch (e) {
-    throw Exception('Failed to load data');
+    throw Exception('Failed to load data: $e');
   }
 }
 
@@ -71,6 +81,7 @@ Future<PasswordExposure> fetchPasswordDetails(String hashedPassword) async {
         'http://xon-api-test.xposedornot.com/v1/pass/anon/$first10digitsOfPassword'));
     if (response.statusCode == 200) {
       final res = jsonDecode(response.body);
+      debugPrint(res.toString());
       return PasswordExposure.fromJson(res);
     } else {
       throw Exception('Failed to load the data');

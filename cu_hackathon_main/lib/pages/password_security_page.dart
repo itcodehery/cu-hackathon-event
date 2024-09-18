@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
+import 'package:cu_hackathon_main/components/security_card.dart';
+import 'package:cu_hackathon_main/helper/constants.dart';
 import 'package:cu_hackathon_main/models/password_exposure_model.dart';
 import 'package:cu_hackathon_main/providers/endpoint_providers.dart';
 import 'package:flutter/material.dart';
@@ -53,39 +55,45 @@ class _PasswordSecurityPageState extends State<PasswordSecurityPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Password Security'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Form(
-          key: _key,
-          child: isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : Column(
-                  children: [
-                    const Text(
-                      "Enter your password to check its security:",
-                      style: TextStyle(fontSize: 32),
+      body: Column(
+        children: [
+          ...buildAppBar(context),
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: Form(
+              key: _key,
+              child: isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : Column(
+                      children: [
+                        const Text(
+                          "Enter your password to check its security:",
+                          style: TextStyle(fontSize: 24),
+                        ),
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            labelText: 'Password',
+                            border: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: globalPrimaryColor)),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your password';
+                            }
+                            return null;
+                          },
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Password',
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your password';
-                        }
-                        return null;
-                      },
-                    ),
-                  ],
-                ),
-        ),
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: globalPrimaryColor.withOpacity(0.4),
+        elevation: 0,
         onPressed: () {
           _checkPassword();
         },

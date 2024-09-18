@@ -11,25 +11,23 @@ class EmailAnalyticsCard extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            ListTile(
-              title: const Text('Breach Analysis'),
-              trailing: TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed('/data_breach');
-                  },
-                  child: const Text("Check for breaches")),
+            const ListTile(
+              title: Text("Vaibhav Murugendra"),
+              subtitle: Text(keyEmail),
+              trailing: Icon(Icons.verified),
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.0),
               child: Divider(),
             ),
             ListTile(
-              title: const Text(keyEmail),
-              subtitle: const Text("No breaches found!"),
-              trailing: IconButton(
-                icon: const Icon(Icons.edit_outlined),
-                onPressed: () {},
-              ),
+              title: const Text('Breach Analysis'),
+              trailing: TextButton(
+                  style: homeButtonStyle2,
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('/data_breach');
+                  },
+                  child: const Text("Check for breaches")),
             ),
           ],
         ),

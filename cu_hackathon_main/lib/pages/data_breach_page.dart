@@ -1,3 +1,4 @@
+import 'package:cu_hackathon_main/components/security_card.dart';
 import 'package:cu_hackathon_main/helper/constants.dart';
 import 'package:cu_hackathon_main/helper/shared_prefs_helper.dart';
 import 'package:cu_hackathon_main/providers/endpoint_providers.dart';
@@ -35,8 +36,9 @@ class _DataBreachPageState extends State<DataBreachPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        ...buildAppBar(context),
+        const SecurityCard(),
         if (breaches.isNotEmpty) ...[
           ListTile(
             tileColor: Colors.red,

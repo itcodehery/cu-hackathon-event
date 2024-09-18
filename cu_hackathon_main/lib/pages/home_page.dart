@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:cu_hackathon_main/components/data_breach_card.dart';
 import 'package:cu_hackathon_main/components/email_analytics_card.dart';
+import 'package:cu_hackathon_main/components/security_card.dart';
 import 'package:cu_hackathon_main/helper/constants.dart';
 import 'package:cu_hackathon_main/models/exposed_breach_model.dart';
+import 'package:cu_hackathon_main/pages/security_app_page.dart';
 import 'package:cu_hackathon_main/providers/endpoint_providers.dart';
 import 'package:flutter/material.dart';
 
@@ -40,72 +42,79 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 50,
-          ),
-          ListTile(
-            trailing: IconButton(
-              icon: const Icon(Icons.settings_outlined),
-              onPressed: () {},
-            ),
-            title: const Text('Good day,'),
-            subtitle: const Text(
-              "Abin Saji",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-          ),
-          if (generalBreaches != null) ...[
-            ListView.builder(
-                itemCount: generalBreaches?.length ?? 0,
-                itemBuilder: (context, index) {
-                  if (generalBreaches == null) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else {
-                    return DataBreachCard(
-                      breach: generalBreaches![index],
-                    );
-                  }
-                })
-          ] else ...[
-            const Center(
-              child: Text(' No breaches found!'),
-            ),
-          ],
-        ],
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: GridView.builder(
-          padding: const EdgeInsets.all(12),
-          shrinkWrap: true,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              childAspectRatio: 2,
-              crossAxisSpacing: 8,
-              mainAxisSpacing: 0),
-          itemBuilder: (context, index) {
-            return Center(
-                child: TextButton(
-              style: homeButtonStyle,
-              onPressed: () {
-                if (index == 0) {
-                  Navigator.of(context).pushNamed('/data_breach');
-                } else if (index == 1) {
-                  Navigator.of(context).pushNamed('/email_breach_analytics');
-                } else {
-                  Navigator.of(context).pushNamed('/password_security');
-                }
-              },
-              child: Text(
-                homeButtonNames[index],
-                textAlign: TextAlign.center,
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ...buildAppBar(context),
+            const SecurityCard(),
+            SizedBox(
+              width: double.infinity,
+              height: 70,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                        style: homeButtonStyle2.copyWith(
+                          elevation: const WidgetStatePropertyAll(0),
+                          minimumSize:
+                              const WidgetStatePropertyAll(Size(120, 50)),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) {
+                            return const SecurityAppPage();
+                          }));
+                        },
+                        child: const Text('Email Analytics')),
+                    const SizedBox(width: 10),
+                    ElevatedButton(
+                        style: homeButtonStyle2.copyWith(
+                          elevation: const WidgetStatePropertyAll(0),
+                          minimumSize:
+                              const WidgetStatePropertyAll(Size(120, 50)),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('/data_breach');
+                        },
+                        child: const Text('Check Breaches')),
+                    const SizedBox(width: 10),
+                    ElevatedButton(
+                        style: homeButtonStyle2.copyWith(
+                          elevation: const WidgetStatePropertyAll(0),
+                          minimumSize:
+                              const WidgetStatePropertyAll(Size(120, 50)),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('/verified_breaches');
+                        },
+                        child: const Text('Verified Breaches')),
+                  ],
+                ),
               ),
-            ));
-          },
-          itemCount: 3,
+            ),
+            const EmailAnalyticsCard(),
+            if (generalBreaches != null) ...[
+              ListView.builder(
+                  itemCount: generalBreaches?.length ?? 0,
+                  itemBuilder: (context, index) {
+                    if (generalBreaches == null) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      return DataBreachCard(
+                        breach: generalBreaches![index],
+                      );
+                    }
+                  })
+            ] else ...[
+              const SizedBox(),
+            ],
+          ],
         ),
       ),
     );
